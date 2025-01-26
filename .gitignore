@@ -1,0 +1,6 @@
+#list of files and folfers that doesnot need to upload in git
+
+node_modules
+.env
+
+public
