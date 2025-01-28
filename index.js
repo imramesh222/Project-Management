@@ -1,18 +1,28 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import connectDB from './database/connection.js'; // Updated import
-import categoryRoutes from './routes/categoryRoutes.js';
+const express = require('express');
+require('dotenv').config();
+const connectDB = require('./database/connection.js');
+const categoryRouter = require('./routes/categoryRoutes.js');
 
-dotenv.config();
 const app = express();
 
 // Connect to MongoDB
 connectDB();
 
-app.use(express.json()); // Middleware to parse JSON body
+// Middleware to parse JSON body
+app.use(express.json());
 
-// Use category routes
-app.use(categoryRoutes);
+// Use category routes (no prefix)
+app.use('/', categoryRouter);
+
+// Handle 404 routes
+app.use((req, res, next) => {
+  res.status(404).json({ error: "Route not found" });
+});
+
+// Error-handling middleware
+app.use((error, req, res, next) => {
+  res.status(500).json({ error: error.message });
+});
 
 const port = process.env.PORT || 5000;
 

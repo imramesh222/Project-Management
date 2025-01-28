@@ -1,14 +1,25 @@
-import { Category } from "../models/categoryModel.js";
+const Category = require('../models/categoryModel.js');
 
-export const addCategory = async (request, response) => {
+exports.addCategory = async (request, response) => {
   try {
-    const category_new = await Category.create({
-      category_name: request.body.category_name,
+    // Check if category_name is provided
+    if (!request.body.category_name) {
+      return response.status(400).json({ error: "Category name is required" });
+    }
+
+    // Check if the category already exists
+    const existingCategory = await Category.findOne({
+      category_name: request.body.category_name.trim(),
     });
 
-    if (!category_new) {
-      return response.status(400).json({ error: "Something went wrong" });
+    if (existingCategory) {
+      return response.status(400).json({ error: "Category already exists" });
     }
+
+    // Create a new category if it does not exist
+    const category_new = await Category.create({
+      category_name: request.body.category_name.trim(),
+    });
 
     response.status(201).json({
       message: "Category created successfully",
@@ -21,23 +32,19 @@ export const addCategory = async (request, response) => {
 };
 
 
+exports.getAllCategories=async(req,res)=>{
+  let categories=await Category.find()
+  if(!categories){
+    return res.status(404).json({error:"Something went wrong"})
+  }
+  res.send(categories)
+}
 
-// export const addCategory = (request, response) => {
-//   Category.create({
-//     category_name: request.body.category_name,
-//   })
-//     .then((category_new) => {
-//       if (!category_new) {
-//         return response
-//           .status(400)
-//           .json({ error: "Something went wrong" });
-//       }
-//       response.status(201).json({
-//         message: "Category created successfully",
-//         category: category_new,
-//       });
-//     })
-//     .catch((error) => {
-//       return response.status(500).json({ error: error.message });
-//     });
-// };
+exports.getCategoryDetails=async(req,res)=>{
+  const id=req.params.id || req.query.id
+  let category=await Category.findById(id)
+  if(!category){
+    return res.status(400).json({error:"Something went wrong."})
+  }
+  res.send(category)
+}
