@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const connectDB = require('./database/connection.js');
 const categoryRouter = require('./routes/categoryRoutes.js');
+const productRouter = require('./routes/productRoute.js');
 
 const app = express();
 
@@ -12,7 +13,9 @@ connectDB();
 app.use(express.json());
 
 // Use category routes (no prefix)
-app.use('/', categoryRouter);
+app.use(categoryRouter);
+app.use(productRouter);
+
 
 // Handle 404 routes
 app.use((req, res, next) => {

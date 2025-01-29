@@ -48,3 +48,21 @@ exports.getCategoryDetails=async(req,res)=>{
   }
   res.send(category)
 }
+
+exports.updateCategory=async(req,res)=>{
+  let categoryToUpdate=await Category.findByIdAndUpdate(req.params.id,{
+    category_name:req.body.category_name
+  },{new:true})//runValidators: true;  for validation first and then pass the value
+  if(!categoryToUpdate){
+    return res.status(400).json({error:"Something went wrong"})
+  }
+ res.send(categoryToUpdate)
+}
+
+exports.deleteCategory=async(req,res)=>{
+  let deleteCategory=await Category.findByIdAndDelete(req.params.id)
+  if(!deleteCategory){
+    return res.status(400).json({error:"Category not found"})
+  }
+  res.send({message:"Category deleted succesfully."})
+}
