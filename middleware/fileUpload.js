@@ -41,5 +41,7 @@ exports.upload = multer({
   storage: storage,
   limits:{
     fileSize:2000000
-  }
+  },
+  filter:fileFilter
 });
+

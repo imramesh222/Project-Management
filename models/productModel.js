@@ -27,6 +27,7 @@ const productSchema= new mongoose.Schema({
   },
   product_image:{
     type:String,
+    required:true
   },
   rating:{
     type:Number,
