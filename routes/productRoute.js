@@ -1,10 +1,11 @@
 const { addProduct, deleteProduct, getAllProducts, getProductDetails, getProductsByCategory, updateProduct } = require("../controller/productController");
 const { upload } = require("../middleware/fileUpload");
+const { productRules, validationMethod } = require("../middleware/validationScripts");
 
 
 const router=require("express").Router();
 
-router.post('/addproduct',upload.single('product_image'),addProduct)
+router.post('/addproduct',upload.single('product_image'),productRules,validationMethod,addProduct)
 
 router.get('/getallproducts',getAllProducts)
 

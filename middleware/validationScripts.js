@@ -1,13 +1,52 @@
-const {check, validationResult}=require('experss_validator')
+const { check, validationResult } = require('express-validator');
 
-exports.validationMethod=()=>{
-  let errors=validationResult(req,res,next)
-  if(!errors.empty()){
-    return res.status(400).json({error:errors.array()[0].msg()})
+exports.validationMethod = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ error: errors.array()[0].msg });
   }
-}
+  next();
+};
 
-exports.validationRules=[
-  check('category_nanme',"Category field id required").notEmpty()
-  .isLength({min:3}).withMessage("CAtegory must be at least 3 characters.")
+exports.categoryRules = [
+  check('category_name', "Category field is required")
+    .notEmpty()
+    .isLength({ min: 3 }).withMessage("Category name must be at least 3 characters.")
+];
+
+exports.categoryUpdateRules=[
+  check('category_name', "Category field is required")
+  .optional()
+    .isLength({ min: 3 }).withMessage("Category name must be at least 3 characters.")
+]
+
+exports.productRules=[
+  check('product_title',"Product name is required.")
+  .notEmpty()
+  .isLength({min:3}).withMessage("Product name  must be 3 characters. "),
+
+  check('product_price',"Product price is required.")
+  .notEmpty()
+  .isFloat({get:0}).withMessage("Product price must be a positive number"),
+
+  check('product_description',"Product description is required.")
+  .notEmpty()
+  .isLength({min:10}).withMessage("Product description must be at least 10 characters long"),
+
+  check("count_in_stock")
+  .notEmpty().withMessage("Stock count is required")
+  .isInt({ min: 0 }).withMessage("Stock count must be a non-negative integer"),
+
+  check("category")
+    .notEmpty().withMessage("Category ID is required")
+    .isMongoId().withMessage("Invalid category ID format"),
+
+  // check("product_image")
+  //   .notEmpty().withMessage("Product image URL is required")
+  //   .isURL().withMessage("Invalid image URL"),
+
+  check("rating")
+    .optional()
+    .isFloat({ min: 1, max: 5 }).withMessage("Rating must be between 1 and 5")
+
 ]
