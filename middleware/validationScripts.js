@@ -41,9 +41,13 @@ exports.productRules=[
     .notEmpty().withMessage("Category ID is required")
     .isMongoId().withMessage("Invalid category ID format"),
 
-  // check("product_image")
-  //   .notEmpty().withMessage("Product image URL is required")
-  //   .isURL().withMessage("Invalid image URL"),
+   // ✅ Validate product image using `req.file` (instead of URL)
+   check("product_image").custom((_value, { req }) => {
+    if (!req.file) {
+      throw new Error("Product image is required and must be an image file (JPG, JPEG, PNG).");
+    }
+    return true;
+  }),
 
   check("rating")
     .optional()
