@@ -44,7 +44,7 @@ exports.register = async (req, res) => {
   emailSender({
     from: "noreply@something.com",
     to: email,
-    subject: "verfication E_mail",
+    subject: "verfication E-mail",
     text: `Click on the following link to activate your account.${URL}`,
     html: `<a href="${URL}"><button>verify now</button></a>`,
   });
@@ -147,3 +147,19 @@ exports.resendVerification=async (req,res)=>{
     return res.status(400).json({error:"Something went wrong"})
   }
 }
+// 
+// emailSender({
+//   from: "noreply@something.com",
+//   to: req.email,
+//   subject: "verfication E-mail",
+//   text: `Click on the following link to activate your account.${URL}`,
+//   html: `<a href="${URL}"><button>verify now</button></a>`,
+// })
+// 
+
+//Signout
+exports.signout=(req,res)=>{
+  res.clearCookie()
+  res.send({message:"Signed out successfully."})
+}
+

@@ -54,3 +54,22 @@ exports.productRules=[
     .isFloat({ min: 1, max: 5 }).withMessage("Rating must be between 1 and 5")
 
 ]
+
+
+exports.userRules=[
+  check('username','username is required').notEmpty()
+  .isLength({min:3}).withMessage("Username must be of minimum of 3 words")
+  .not().isIn((['admin','test','fog'])).withMessage("Username not allowed"),
+  check('email',"Email is required").notEmpty()
+  .isEmail().withMessage("Email format incorrect"),
+  check('password',"Password is required").notEmpty()
+  .matches(/[a-z]/).withMessage("Password must consist at least 1 lowercase alphabet")
+  .matches(/[A-Z]/).withMessage("Password must consist at least 1 uppercase alphabet")
+  .matches(/[0-9]/).withMessage("Password must consist at least 1 number")
+  .matches(/[!@#$%]/).withMessage("Password must consist 1 special character")
+  .isLength({min:8}).withMessage("Password must consist at least 8 characters")
+  .isLength({max:20}).withMessage("Password must be within 20 characters")
+  
+
+
+]
