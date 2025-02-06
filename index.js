@@ -4,6 +4,7 @@ const connectDB = require('./database/connection.js');
 const categoryRouter = require('./routes/categoryRoutes.js');
 const productRouter = require('./routes/productRoute.js');
 const userRouter=require('./routes/userRoutes.js')
+const OrderRouter=require('./routes/orderRoute.js')
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(categoryRouter);
 app.use(productRouter);
 app.use(userRouter)
+app.use(OrderRouter)
 
 
 app.use('/public/uploads',express.static('public/uploads'))
